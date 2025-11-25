@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProBusiness Academy</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f8; color: #333; line-height: 1.7; }
+header { background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; padding: 40px 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+header h1 { font-size: 2.5em; font-weight: 700; letter-spacing: 1px; }
+
+.container { width: 90%; max-width: 1200px; margin: 40px auto; }
+.courses { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+
+.course { background: #fff; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); width: 300px; padding: 25px; text-align: center; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+.course:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
+.course img { width: 100%; border-radius: 12px; transition: transform 0.3s ease; }
+.course:hover img { transform: scale(1.05); }
+.course h3 { margin: 15px 0 10px 0; font-size: 1.4em; color: #2E7D32; }
+.course p { font-size: 1em; color: #555; }
+
+.details-container { display: none; margin-top: 40px; background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 12px 25px rgba(0,0,0,0.15); max-width: 900px; margin-left:auto; margin-right:auto; animation: fadeIn 0.5s ease forwards; }
+.details-container h2 { font-size: 2em; margin-bottom: 25px; color: #2E7D32; text-align: center; }
+.details-container p { font-size: 1.1em; line-height: 1.8; color: #333; margin-bottom: 25px; text-align: justify; }
+
+.questions { margin-top: 25px; }
+.questions h3 { font-size: 1.4em; margin-bottom: 15px; color: #1B5E20; }
+.questions ol { padding-left: 20px; }
+.question { margin-bottom: 18px; font-size: 1em; }
+input[type="radio"] { margin-right: 10px; }
+
+.close-btn, .check-btn { background: #4CAF50; border: none; color: white; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 1em; transition: all 0.3s ease; }
+.close-btn:hover { background: #d32f2f; transform: scale(1.05); }
+.check-btn:hover { background: #388E3C; transform: scale(1.05); }
+
+.result { font-weight: 700; margin-top: 18px; font-size: 1.1em; color: #2E7D32; }
+
+footer { text-align: center; padding: 25px 0; background: #2E7D32; color: white; margin-top: 50px; font-size: 0.95em; border-top: 4px solid #4CAF50; }
+footer p, footer a { margin: 5px 0; color: white; text-decoration: none; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<header>
+<h1>ProBusiness Academy</h1>
+</header>
+
+<div class="container">
+  <div class="courses">
+      <div class="course" onclick="showDetails('Маркетинг с нуля', longText1)">
+          <img src="https://images.unsplash.com/photo-1581092334955-6c5a54fae71a?fit=crop&w=600&q=80" alt="Маркетинг">
+          <h3>Маркетинг с нуля</h3>
+          <p>Детальное изучение маркетинга от основ до продвинутых стратегий.</p>
+      </div>
+
+      <div class="course" onclick="showDetails('Бизнес-стратегии', longText2)">
+          <img src="https://images.unsplash.com/photo-1581091215362-2c89f4c9865c?fit=crop&w=600&q=80" alt="Бизнес">
+          <h3>Бизнес-стратегии</h3>
+          <p>Как строить и развивать компанию, управлять ресурсами и командой.</p>
+      </div>
+
+      <div class="course" onclick="showDetails('Продажи и переговоры', longText3)">
+          <img src="https://images.unsplash.com/photo-1560264353-2a0b2ff891f0?fit=crop&w=600&q=80" alt="Продажи">
+          <h3>Продажи и переговоры</h3>
+          <p>Умение продавать, вести переговоры и увеличивать доход компании.</p>
+      </div>
+  </div>
+
+  <div class="details-container" id="detailsContainer">
+    <h2 id="detailsTitle"></h2>
+    <div id="detailsText"></div>
+    <button class="close-btn" onclick="closeDetails()">Закрыть</button>
+  </div>
+</div>
+
+<footer>
+  <p>Разработчики: Боранхан Габиден и Адил Омар Алимжан</p>
+  <p>Email: <a href="mailto:Adilomaralimzhan@gmail.com">Adilomaralimzhan@gmail.com</a></p>
+  <p>&copy; 2025 ProBusiness Academy</p>
+</footer>
+
+<script>
+// ------------------- ТЕКСТЫ КУРСОВ С ВОПРОСАМИ -------------------
+
+const longText1 = `
+<p>Маркетинг — это не просто реклама. Он объединяет понимание клиента, анализ рынка и стратегическое планирование. Основная цель маркетинга — создать ценность для клиента, что позволяет компании развиваться. Начнем с изучения целевой аудитории. Это конкретная группа людей, которая проявляет интерес к вашему продукту или услуге. Понимание их потребностей, проблем и мотивов помогает правильно формировать предложения.</p>
+<p>Анализ конкурентов — следующий шаг. Важно изучить, что предлагают другие компании, какие стратегии они используют, какие слабые и сильные стороны. Это помогает выявить уникальные преимущества и найти свою нишу. Без этого шага бизнес рискует потеряться на рынке.</p>
+<p>Инструменты маркетинга включают социальные сети, email-рассылки, контент-маркетинг, SEO и платную рекламу. Необязательно использовать все сразу, важно выбрать подходящие именно для вашей аудитории и целей. Создание полезного и интересного контента — ключ к удержанию внимания клиентов.</p>
+<p>Аналитика и тестирование кампаний позволяют понимать, что работает, а что нет. Даже простые показатели — клики, просмотры, подписки — дают много информации для улучшения стратегии. Создание бренда важно: визуальный стиль, миссия и ценности формируют доверие и репутацию.</p>
+<p>Маркетинг — это постоянная работа, эксперименты и анализ. Нет универсального рецепта: важно пробовать, учиться на ошибках и корректировать действия. Освоив основы, вы сможете строить долгосрочные отношения с клиентами и развивать бизнес системно.</p>
+
+<div class="questions">
+<h3>Вопросы по материалу:</h3>
+<ol>
+<li class="question">Что такое целевая аудитория?<br>
+<input type="radio" name="q1" value="wrong"> Любой человек<br>
+<input type="radio" name="q1" value="correct"> Конкретная группа клиентов<br>
+<input type="radio" name="q1" value="wrong"> Все потенциальные клиенты</li>
+
+<li class="question">Почему важен анализ конкурентов?<br>
+<input type="radio" name="q2" value="correct"> Чтобы найти свою нишу<br>
+<input type="radio" name="q2" value="wrong"> Чтобы копировать их<br>
+<input type="radio" name="q2" value="wrong"> Чтобы игнорировать рынок</li>
+
+<li class="question">Выберите маркетинговые инструменты:<br>
+<input type="radio" name="q3" value="correct"> Социальные сети, email, контент<br>
+<input type="radio" name="q3" value="wrong"> Только реклама на ТВ<br>
+<input type="radio" name="q3" value="wrong"> Игры и музыка</li>
+
+<li class="question">Что такое бренд?<br>
+<input type="radio" name="q4" value="correct"> Репутация и впечатление о компании<br>
+<input type="radio" name="q4" value="wrong"> Только логотип<br>
+<input type="radio" name="q4" value="wrong"> Цена продукта</li>
+
+<li class="question">Почему нужны эксперименты в маркетинге?<br>
+<input type="radio" name="q5" value="correct"> Чтобы проверить, что работает<br>
+<input type="radio" name="q5" value="wrong"> Чтобы всё менять без анализа<br>
+<input type="radio" name="q5" value="wrong"> Чтобы не планировать</li>
+</ol>
+<button class="check-btn" onclick="checkAnswers('q', 'result')">Проверить ответы</button>
+<div class="result" id="result"></div>
+</div>
+`;
+
+// ----------------- Курс 2 -----------------
+const longText2 = `
+<p>Бизнес-стратегии — это основа долгосрочного успеха компании. Они помогают определить цели, распределять ресурсы и управлять командой. Стратегия начинается с анализа рынка и понимания сильных и слабых сторон компании. Разработка стратегии помогает оценивать риски и планировать рост.</p>
+<p>Управление ресурсами — ключевой элемент. Это включает финансовые ресурсы, персонал и технологии. Оптимизация позволяет работать эффективнее, избегать потерь и достигать целей быстрее. Анализ данных помогает принимать обоснованные решения, выбирать направления для инвестиций и инноваций.</p>
+<p>Важно учитывать конкурентную среду. Определение уникальных преимуществ позволяет выделяться на рынке и строить успешные продукты и услуги. Разработка бизнес-моделей, планирование этапов роста и контроль выполнения задач — важные аспекты стратегии.</p>
+<p>Гибкость и адаптация — часть стратегического мышления. Рынок меняется, и стратегия должна корректироваться. Постоянное тестирование гипотез, внедрение новых идей и мониторинг показателей помогают улучшать процессы и достигать стабильного развития.</p>
+<p>В результате, успешная бизнес-стратегия позволяет компании расти системно, использовать ресурсы максимально эффективно и удерживать конкурентные позиции на рынке.</p>
+
+<div class="questions">
+<h3>Вопросы по материалу:</h3>
+<ol>
+<li class="question">Что такое бизнес-стратегия?<br>
+<input type="radio" name="q1b" value="correct"> План действий для развития компании<br>
+<input type="radio" name="q1b" value="wrong"> Промо-акция<br>
+<input type="radio" name="q1b" value="wrong"> Любой проект</li>
+
+<li class="question">Почему важно управлять ресурсами?<br>
+<input type="radio" name="q2b" value="correct"> Чтобы работать эффективно<br>
+<input type="radio" name="q2b" value="wrong"> Чтобы тратить больше денег<br>
+<input type="radio" name="q2b" value="wrong"> Чтобы ничего не делать</li>
+
+<li class="question">Что помогает принимать решения?<br>
+<input type="radio" name="q3b" value="correct"> Анализ данных и планирование<br>
+<input type="radio" name="q3b" value="wrong"> Случайные идеи<br>
+<input type="radio" name="q3b" value="wrong"> Игнорирование ситуации</li>
+
+<li class="question">Что включает стратегия роста?<br>
+<input type="radio" name="q4b" value="correct"> Развитие компании и увеличение прибыли<br>
+<input type="radio" name="q4b" value="wrong"> Только маркетинг<br>
+<input type="radio" name="q4b" value="wrong"> Только дизайн</li>
+
+<li class="question">Зачем тестировать гипотезы?<br>
+<input type="radio" name="q5b" value="correct"> Чтобы улучшать процессы и результаты<br>
+<input type="radio" name="q5b" value="wrong"> Чтобы игнорировать данные<br>
+<input type="radio" name="q5b" value="wrong"> Чтобы тратить время</li>
+</ol>
+<button class="check-btn" onclick="checkAnswers('b', 'resultB')">Проверить ответы</button>
+<div class="result" id="resultB"></div>
+</div>
+`;
+
+// ----------------- Курс 3 -----------------
+const longText3 = `
+<p>Продажи и переговоры — ключевой элемент успешного бизнеса. Умение продавать и вести переговоры напрямую влияет на доход компании. Основная задача продавца — понять потребности клиента, предложить решение и убедить в ценности продукта или услуги.</p>
+<p>Навыки переговоров включают слушание, умение задавать вопросы, анализ интересов сторон и поиск компромиссов. Важно не просто продавать, а строить долгосрочные отношения с клиентами. Эффективные переговоры помогают увеличивать доход, сокращать риски и укреплять репутацию компании.</p>
+<p>Продажи включают разные подходы: прямые продажи, онлайн-продажи, B2B и B2C стратегии. Использование CRM, аналитики и автоматизации помогает отслеживать процессы и повышать эффективность. Дополнительные продажи (upsell) и сопутствующие (cross-sell) увеличивают средний чек и лояльность клиентов.</p>
+<p>Постоянная практика и анализ результатов необходимы для совершенствования навыков. Важно изучать успешные кейсы, применять методы психологии и коммуникации, тестировать новые стратегии. Это позволяет продавцам становиться профессионалами и приносить стабильный доход компании.</p>
+<p>Итог: продажи и переговоры — это не просто процесс, а система, требующая навыков, анализа, постоянного обучения и адаптации к изменениям рынка.</p>
+
+<div class="questions">
+<h3>Вопросы по материалу:</h3>
+<ol>
+<li class="question">Что важно в переговорах?<br>
+<input type="radio" name="q1c" value="correct"> Умение слушать и убеждать<br>
+<input type="radio" name="q1c" value="wrong"> Игнорировать клиента<br>
+<input type="radio" name="q1c" value="wrong"> Только говорить о цене</li>
+
+<li class="question">Что помогает увеличить продажи?<br>
+<input type="radio" name="q2c" value="correct"> Понимание потребностей клиента<br>
+<input type="radio" name="q2c" value="wrong"> Продавать всем одинаково<br>
+<input type="radio" name="q2c" value="wrong"> Игнорировать аналитику</li>
+
+<li class="question">Что такое upsell?<br>
+<input type="radio" name="q3c" value="correct"> Предложение дополнительного продукта<br>
+<input type="radio" name="q3c" value="wrong"> Снижение цены<br>
+<input type="radio" name="q3c" value="wrong"> Отмена сделки</li>
+
+<li class="question">Почему важна практика в продажах?<br>
+<input type="radio" name="q4c" value="correct"> Чтобы улучшать навыки и результаты<br>
+<input type="radio" name="q4c" value="wrong"> Чтобы не работать<br>
+<input type="radio" name="q4c" value="wrong"> Чтобы отвлекаться</li>
+
+<li class="question">Что такое cross-sell?<br>
+<input type="radio" name="q5c" value="correct"> Предложение сопутствующих товаров<br>
+<input type="radio" name="q5c" value="wrong"> Снижение качества<br>
+<input type="radio" name="q5c" value="wrong"> Игнорирование клиента</li>
+</ol>
+<button class="check-btn" onclick="checkAnswers('c', 'resultC')">Проверить ответы</button>
+<div class="result" id="resultC"></div>
+</div>
+`;
+
+function showDetails(title, text) {
+    document.getElementById('detailsTitle').innerText = title;
+    document.getElementById('detailsText').innerHTML = text;
+    document.getElementById('detailsContainer').style.display = 'block';
+    window.scrollTo({ top: document.getElementById('detailsContainer').offsetTop - 20, behavior: 'smooth' });
+}
+
+function closeDetails() {
+    document.getElementById('detailsContainer').style.display = 'none';
+}
+
+function checkAnswers(prefix, resultId) {
+    let correct = 0;
+    const answersMap = {
+        'q':'correct','q2':'correct','q3':'correct','q4':'correct','q5':'correct',
+        'q1b':'correct','q2b':'correct','q3b':'correct','q4b':'correct','q5b':'correct',
+        'q1c':'correct','q2c':'correct','q3c':'correct','q4c':'correct','q5c':'correct'
+    };
+    for (let i=1;i<=5;i++){
+        const name = prefix==='q'? `q${i}` : prefix==='b'? `q${i}b` : `q${i}c`;
+        const sel = document.querySelector(`input[name="${name}"]:checked`);
+        if(sel && sel.value===answersMap[name]) correct++;
+    }
+    document.getElementById(resultId).innerText = `Вы ответили правильно на ${correct} из 5 вопросов.`;
+}
+</script>
+
+</body>
+</html>
